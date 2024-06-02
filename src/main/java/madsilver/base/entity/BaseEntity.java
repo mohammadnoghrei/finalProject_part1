@@ -8,11 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
 @MappedSuperclass
 public class BaseEntity <ID extends Serializable> implements Serializable{
