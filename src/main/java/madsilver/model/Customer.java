@@ -20,5 +20,6 @@ import java.util.List;
 public class Customer extends Person {
     @OneToMany
     private List<Order> orderList=new ArrayList<>();
+    double cardBalance;
 
 }
