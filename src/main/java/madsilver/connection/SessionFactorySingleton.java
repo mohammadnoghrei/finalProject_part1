@@ -2,7 +2,7 @@ package madsilver.connection;
 
 
 
-import madsilver.model.Person;
+import madsilver.model.*;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -23,6 +23,16 @@ public class SessionFactorySingleton {
             INSTANCE = new MetadataSources(registry)
 
                     .addAnnotatedClass(Person.class)
+                    .addAnnotatedClass(Customer.class)
+                    .addAnnotatedClass(Expert.class)
+                    .addAnnotatedClass(Admin.class)
+                    .addAnnotatedClass(Comment.class)
+                    .addAnnotatedClass(Offer.class)
+                    .addAnnotatedClass(Order.class)
+                    .addAnnotatedClass(Services.class)
+                    .addAnnotatedClass(SubServices.class)
+                    .addAnnotatedClass(Wallet.class)
+
 
                     .buildMetadata()
                     .buildSessionFactory();
