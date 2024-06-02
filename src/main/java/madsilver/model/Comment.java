@@ -3,11 +3,12 @@ package madsilver.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import madsilver.base.entity.BaseEntity;
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
