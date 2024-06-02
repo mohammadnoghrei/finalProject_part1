@@ -27,12 +27,11 @@ public class Person extends BaseEntity<Long> {
     private String username;
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     private String password;
-    @Column(unique=true)
+    @Column(unique=true,nullable = false)
     @ValidationCode
     private String nationCode;
     @Pattern(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
     private String email;
     private LocalDate registerDate;
-    @OneToOne
-    private Wallet wallet;
+
 }
