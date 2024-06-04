@@ -1,9 +1,6 @@
 package madsilver.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import madsilver.base.entity.BaseEntity;
@@ -22,9 +19,9 @@ public class SubServices extends BaseEntity<Long> {
     private String name;
     @ManyToOne
     private Services services;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Expert>expertList=new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy ="subServices" )
     private List<Order>orderList=new ArrayList<>();
     private double basePrice;
     private String description;
