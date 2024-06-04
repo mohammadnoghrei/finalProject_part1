@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Customer extends Person {
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<Order> orderList=new ArrayList<>();
     double cardBalance;
 

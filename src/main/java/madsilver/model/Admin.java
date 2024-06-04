@@ -15,12 +15,4 @@ import madsilver.base.entity.BaseEntity;
 public class Admin extends Person {
     private String grade;
 
-//    public class AdminBuilder extends PersonBuilder<AdminBuilder>(){
-//        public AdminBuilder(PersonBuilder<AdminBuilder> builder){
-//            super(builder);
-//        }
-//        public AdminBuilder adminBuilder(String adminId){
-//            thid.adminId = adminId;
-//             return this;}
-//    }
 }
