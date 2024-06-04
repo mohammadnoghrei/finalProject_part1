@@ -1,12 +1,14 @@
 package madsilver.menu;
 
-import lombok.extern.slf4j.Slf4j;
+
 import madsilver.base.exeption.NotFoundException;
 import madsilver.model.*;
 import madsilver.service.CustomerService;
+import madsilver.service.OrderService;
 import madsilver.service.ServicesService;
 import madsilver.service.SubServicesService;
 import madsilver.utility.ApplicationContext;
+import madsilver.utility.SecurityContext;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -18,16 +20,33 @@ import java.util.Scanner;
 public class CustomerMenu {
     public Scanner scanner = new Scanner(System.in);
 
+    private final OrderService orderService = ApplicationContext.getOrderService();
     private final CustomerService customerService = ApplicationContext.getCustomerService();
     private final ServicesService servicesService = ApplicationContext.getServicesService();
     private final SubServicesService subServicesService = ApplicationContext.getSubServicesService();
 
+
+
+    public void baseCustomerMenu(){
+        System.out.println("welcome to customer menu");
+        System.out.println("please select one item");
+        System.out.println("1,edit profile  2,change password\n" +
+                "3,save order  0,Exit");
+    }
     public void saveCustomer() {
         Customer customer = (Customer) makePerson();
+        System.out.println("please enter your card balance ");
+        double cardBalance = 0;
+        try {
+            cardBalance = scanner.nextDouble();
+        } catch (InputMismatchException e) {
+            System.out.println("please enter valid price");
+        }
+        customer.setCardBalance(cardBalance);
         try {
             customerService.saveOrUpdate(customer);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -40,44 +59,52 @@ public class CustomerMenu {
         } catch (NotFoundException e) {
             e.getMessage();
         } catch (IllegalStateException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
-        LocalDate date=null;
-        while (date == null) {
-            System.out.println("Please enter date for do order (yyyy-mm-dd):");
-            String input = scanner.next();
-            scanner.nextLine();
-            try {
-                date = LocalDate.parse(input, DATE_FORMATTER);
-                System.out.println("Entry date is: " + date);
-            } catch (DateTimeException e) {
-                System.out.println("The date entered is not valid. Please try again using the format yyyy-mm-dd.");
+        LocalDate date = null;
+        if (subServices != null) {
+            while (date == null) {
+                System.out.println("Please enter date for do order (yyyy-mm-dd):");
+                String input = scanner.next();
+                scanner.nextLine();
+                try {
+                    date = LocalDate.parse(input, DATE_FORMATTER);
+                    System.out.println("YOUR date is: " + date);
+                } catch (DateTimeException e) {
+                    System.out.println("The date entered is not valid. Please try again using the format yyyy-mm-dd.");
+                }
             }
-        }
-        System.out.println("please enter your offer price for order");
-        double price = 0;
-        boolean flag=true;
-        while (flag){
-        try {
-            price=scanner.nextLong();
-            scanner.nextLine();
-            if (price<subServices.getBasePrice())
-                System.out.println("your offer price less than base price please try again!!");
-            else flag=false;
-        }catch (InputMismatchException e){
-            System.out.println("please enter valid price");
-        }
-        }
-        System.out.println("please enter your address");
-        String address=scanner.next();
-        Order order=Order.builder()
-                .subServices(subServices)
-                .address(address)
-                .customerOfferPrice(price)
-                .orderRegisterDate(LocalDate.now())
-                .build();
-
-
+            System.out.println("the " + subServices.getName() + " base price : " + subServices.getBasePrice() + " your offer offer price should be more than base price");
+            System.out.println("please enter your offer price for order");
+            double price = 0;
+            boolean flag = true;
+            while (flag) {
+                try {
+                    price = scanner.nextLong();
+                    scanner.nextLine();
+                    if (price < subServices.getBasePrice()) {
+                        System.out.println("your offer price less than base price please try again!!");
+                    }else flag=false;
+                } catch (InputMismatchException e) {
+                    System.out.println("please enter valid price");
+                }
+            }
+            System.out.println("please enter your address");
+            String address = scanner.next();
+            Order order = Order.builder()
+                    .subServices(subServices)
+                    .address(address)
+                    .customerOfferPrice(price)
+                    .requestedDateToDoOrder(date)
+                    .orderRegisterDate(LocalDate.now())
+                    .build();
+            try {
+                if (orderService.validate(order))
+                    orderService.saveOrUpdate(order);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else System.out.println("your service not found");
     }
 
     public Services selectService() {
@@ -91,10 +118,9 @@ public class CustomerMenu {
             if (s.getId() == id)
                 services = s;
         }
-        return services;
-//        if (services != null)
-//            return services;
-//        else throw new NotFoundException(String.format("entity not found"));
+        if (services != null)
+            return services;
+        else throw new NotFoundException("entity not found");
 
     }
 
@@ -112,12 +138,12 @@ public class CustomerMenu {
             }
             if (subServices != null)
                 return subServices;
-            else new NotFoundException(String.format("entity not found"));
+            else throw new NotFoundException("entity not found");
         }
         return null;
     }
 
-    public static Person makePerson() {
+    public  Person makePerson() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("please enter your first name:");
         String firstname = scanner.next();
@@ -133,7 +159,7 @@ public class CustomerMenu {
         String password = scanner.next();
         System.out.println("please enter your :");
 
-        Person person = Person.builder()
+        return Person.builder()
                 .firstname(firstname)
                 .lastname(lastname)
                 .nationCode(nationCode)
@@ -141,7 +167,40 @@ public class CustomerMenu {
                 .username(username)
                 .password(password)
                 .build();
-        return person;
+    }
+
+    public void changePassword() {
+        System.out.println("please enter your username");
+        String username = scanner.next();
+        scanner.nextLine();
+        System.out.println("please enter your password");
+        String password = scanner.next();
+        scanner.nextLine();
+        Customer customer;
+        try {
+            customer = ApplicationContext.getCustomerService().findByUsername(username);
+            if (password.equals(customer.getPassword())) {
+                System.out.println("please enter new password");
+                String newPassword = scanner.next();
+                scanner.nextLine();
+                if (newPassword.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
+                    System.out.println("please enter your new password again");
+                    String newPassword2 = scanner.next();
+                    scanner.nextLine();
+                    if (newPassword.equals(newPassword2)) {
+                        customer.setPassword(newPassword);
+                        try {
+                            customerService.saveOrUpdate(customer);
+                            customer=SecurityContext.customer;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else System.out.println("please enter valid password");
+                } else System.out.println("please enter valid password");
+            } else System.out.println("please enter valid password");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
