@@ -10,8 +10,8 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class SubServiceRepositoryImpl extends BaseRepositoryImpl<SubServices,Long> implements SubServicesRepository {
-    public SubServiceRepositoryImpl(SessionFactory sessionFactory) {
+public class SubServicesRepositoryImpl extends BaseRepositoryImpl<SubServices,Long> implements SubServicesRepository {
+    public SubServicesRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
@@ -26,7 +26,7 @@ public class SubServiceRepositoryImpl extends BaseRepositoryImpl<SubServices,Lon
         Query<SubServices> query = session.createQuery("FROM SubServices s WHERE s.services = :service ", SubServices.class);
         query.setParameter("service",services);
         List<SubServices> subServiceList=query.list();
-        session.close();
+//        session.close();
         return subServiceList;
     }
 }
