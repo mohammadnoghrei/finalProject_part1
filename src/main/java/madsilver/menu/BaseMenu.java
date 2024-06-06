@@ -1,9 +1,6 @@
 package madsilver.menu;
 
-import madsilver.model.Admin;
-import madsilver.model.Customer;
-import madsilver.model.Expert;
-import madsilver.model.Person;
+import madsilver.model.*;
 import madsilver.utility.ApplicationContext;
 import madsilver.utility.SecurityContext;
 
@@ -16,7 +13,7 @@ public class BaseMenu {
     private final ExpertMenu expertMenu = new ExpertMenu();
     public Scanner scanner = new Scanner(System.in);
 
-    public void baseMenu() {
+    public void signIn() {
         System.out.println("***********  WELCOME  **********");
         System.out.println();
         System.out.println("please enter your username:");
@@ -38,14 +35,44 @@ public class BaseMenu {
         } else if (!person.getPassword().equals(password)) {
             System.out.println("please enter valid userName or passWord");
         } else if (Customer.class == person.getClass()) {
-            customerMenu.baseCustomerMenu();
             SecurityContext.customer = (Customer) person;
+            customerMenu.baseCustomerMenu();
         } else if (Expert.class == person.getClass()) {
-            expertMenu.baseExpertMenu();
-            SecurityContext.expert = (Expert) person;
+            Expert expert = ApplicationContext.getExpertService().findById(person.getId());
+            if (expert.getExpertStatus().equals(ExpertStatus.CONFIRMED)) {
+                SecurityContext.expert = expert;
+                expertMenu.baseExpertMenu();
+            }else System.out.println("you are not confirmed");
         } else if (Admin.class == person.getClass()) {
-            adminMenu.baseAdminMenu();
             SecurityContext.admin = (Admin) person;
+            adminMenu.baseAdminMenu();
+        }
+    }
+    public void baseMenu(){
+        System.out.println("""
+                welcome to system\s
+                 please select one item
+                 1,singIn  2,register""");
+        int choose=scanner.nextInt();
+        switch (choose){
+            case 1-> signIn();
+            case 2-> registerPerson();
+        }
+    }
+
+    private void registerPerson() {
+        System.out.println(" please select one item\n" +
+                " 1,customer  2,expert");
+        int choose=scanner.nextInt();
+        switch (choose){
+            case 1 -> {
+                customerMenu.saveCustomer();
+                customerMenu.baseCustomerMenu();
+            }
+            case 2 -> {
+                expertMenu.saveExpert();
+                System.out.println("welcome to system please waiting for confirm");
+            }
         }
     }
 }
