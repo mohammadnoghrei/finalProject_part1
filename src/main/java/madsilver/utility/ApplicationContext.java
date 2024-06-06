@@ -18,6 +18,7 @@ public class ApplicationContext {
     private static final OfferRepository OFFER_REPOSITORY;
     private static final OrderRepository ORDER_REPOSITORY;
     private static final WalletRepository WALLET_REPOSITORY;
+    private static final SubServiceExpertRepository SUB_SERVICE_EXPERT_REPOSITORY;
 
 
 
@@ -31,7 +32,7 @@ public class ApplicationContext {
     private static final OfferService OFFER_SERVICE;
     private static final OrderService ORDER_SERVICE;
     private static final WalletService WALLET_SERVICE;
-
+    private static final SubServiceExpertService SUB_SERVICE_EXPERT_SERVICE;
     static {
         SESSION_FACTORY = SessionFactorySingleton.getInstance();
 
@@ -40,12 +41,12 @@ public class ApplicationContext {
         EXPERT_REPOSITORY =new ExpertRepositoryImpl(SESSION_FACTORY);
         PERSON_REPOSITORY = new PersonRepositoryImpl(SESSION_FACTORY);
         SERVICES_REPOSITORY =new ServicesRepositoryImpl(SESSION_FACTORY);
-        SUB_SERVICES_REPOSITORY =new SubServiceRepositoryImpl(SESSION_FACTORY);
+        SUB_SERVICES_REPOSITORY =new SubServicesRepositoryImpl(SESSION_FACTORY);
         COMMENT_REPOSITORY =new CommentRepositoryImpl(SESSION_FACTORY);
         OFFER_REPOSITORY =new OfferRepositoryImpl(SESSION_FACTORY);
         ORDER_REPOSITORY =new OrderRepositoryImpl(SESSION_FACTORY);
         WALLET_REPOSITORY =new WalletRepositoryImpl(SESSION_FACTORY);
-
+        SUB_SERVICE_EXPERT_REPOSITORY = new SubServiceExpertRepositoryImpl(SESSION_FACTORY);
 
         ADMIN_SERVICE =new AdminServiceImpl(ADMIN_REPOSITORY,SESSION_FACTORY);
         CUSTOMER_SERVICE =new CustomerServiceImpl(CUSTOMER_REPOSITORY,SESSION_FACTORY);
@@ -57,7 +58,7 @@ public class ApplicationContext {
         OFFER_SERVICE =new OfferServiceImpl(OFFER_REPOSITORY,SESSION_FACTORY);
         ORDER_SERVICE =new OrderServiceImpl(ORDER_REPOSITORY,SESSION_FACTORY);
         WALLET_SERVICE =new WalletServiceImpl(WALLET_REPOSITORY,SESSION_FACTORY);
-
+        SUB_SERVICE_EXPERT_SERVICE =new SubServiceExpertServiceImpl(SUB_SERVICE_EXPERT_REPOSITORY,SESSION_FACTORY);
     }
 
 
@@ -71,4 +72,5 @@ public class ApplicationContext {
     public static OfferService getOfferService(){return OFFER_SERVICE;}
     public static OrderService getOrderService(){return ORDER_SERVICE;}
     public static WalletService getWalletService(){return WALLET_SERVICE;}
+    public static SubServiceExpertService getSubServiceExpertService(){return SUB_SERVICE_EXPERT_SERVICE;}
 }
