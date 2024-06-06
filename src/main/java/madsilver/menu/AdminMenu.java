@@ -1,15 +1,10 @@
 package madsilver.menu;
 
-import madsilver.model.Expert;
-import madsilver.model.ExpertStatus;
-import madsilver.model.Services;
-import madsilver.model.SubServices;
-import madsilver.service.AdminService;
-import madsilver.service.ExpertService;
-import madsilver.service.ServicesService;
-import madsilver.service.SubServicesService;
+import madsilver.model.*;
+import madsilver.service.*;
 import madsilver.utility.ApplicationContext;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class AdminMenu {
@@ -18,6 +13,7 @@ public class AdminMenu {
     private final ExpertService expertService = ApplicationContext.getExpertService();
     private final ServicesService servicesService = ApplicationContext.getServicesService();
     private final SubServicesService subServicesService = ApplicationContext.getSubServicesService();
+    private final SubServiceExpertService subServiceExpertService = ApplicationContext.getSubServiceExpertService();
     private final Scanner scanner = new Scanner(System.in);
 
 
@@ -29,7 +25,7 @@ public class AdminMenu {
             System.out.println("""
                     1,save service 2,delete service 3,edit service
                     4,save sub service  5,delete sub service 6,edit sub service  7,edit sub service price and description
-                    8,confirm Expert  0,Exit""");
+                    8,confirm Expert  9,save SubService for expert  10,delete expert from SubService 0,Exit""");
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1 -> saveService();
@@ -40,10 +36,101 @@ public class AdminMenu {
                 case 6 -> editSubService();
                 case 7 -> updatePriceAndDescriptionOfSubService();
                 case 8 -> confirmExpert();
-                case 0 -> flag=false;
+                case 9 -> saveSubServiceExpert();
+                case 10 -> deleteSubServiceExpert();
+                case 0 -> flag = false;
                 default -> throw new IllegalStateException("Unexpected value: " + choice);
             }
         }
+    }
+
+    private void deleteSubServiceExpert() {
+        SubServices subServices = customerMenu.selectSubService(customerMenu.selectService());
+        List<Expert> expertList = expertService.findAllNotConfirmedExpert();
+        expertList.forEach(a -> System.out.println("id:" + a.getId() + "  name and username =" + a.getFirstname() + " _ " + a.getLastname() + " _ " + a.getUsername()));
+        System.out.println("please enter expert id");
+        long id = 0;
+        while (id == 0) {
+            try {
+                id = scanner.nextLong();
+            } catch (InputMismatchException e) {
+                System.out.println(e.getMessage() + "\n please enter valid id");
+            }
+        }
+        long finalId = id;
+        Optional<Expert> result = expertList.stream()
+                .filter(obj -> obj.getId() == finalId).findFirst();
+        Expert findExpert = result.get();
+        if (result.isEmpty())
+            System.out.println("please enter valid id");
+        else {
+            SubServiceExpert subServiceExpert = null;
+            try {
+                subServiceExpert = subServiceExpertService.findSubServiceExpert(findExpert, subServices);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            if (subServiceExpert == null)
+                System.out.println("your entity not found for delete");
+            else {
+                try {
+                    subServiceExpertService.delete(subServiceExpert);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void saveSubServiceExpert() {
+        SubServices subServices = customerMenu.selectSubService(customerMenu.selectService());
+        List<Expert> expertList = expertService.findAllConfirmedExpert();
+        expertList.forEach(a -> System.out.println("id:" + a.getId() + "  name and username =" + a.getFirstname() + " _ " + a.getLastname() + " _ " + a.getUsername()));
+        System.out.println("please enter expert id");
+        long id = 0;
+        while (id == 0) {
+            try {
+                id = scanner.nextLong();
+            } catch (InputMismatchException e) {
+                System.out.println(e.getMessage() + "\n please enter valid id");
+            }
+        }
+        long finalId = id;
+//        Optional<Expert> result = expertList.stream()
+//                .filter(obj -> obj.getId() == finalId).findFirst();
+//        Expert findExpert = result.get();
+
+        Expert findExpert = null;
+        try {
+            findExpert=expertService.findById(finalId);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        if (findExpert==null)
+            System.out.println("please enter valid id");
+        else if (findExpert!=null&&findExpert.getExpertStatus().equals(ExpertStatus.CONFIRMED)) {
+
+            SubServiceExpert subServiceExpert = null;
+            try {
+                subServiceExpert = subServiceExpertService.findSubServiceExpert(findExpert, subServices);
+            } catch (Exception e) {
+                System.out.println(00);
+            }
+//            Optional<SubServiceExpert> subServiceExpertOptional= subServiceExpertService.findSubServiceExpert(findExpert, subServices);
+//            SubServiceExpert subServiceExpert = subServiceExpertOptional.get();
+            if (subServiceExpert == null) {
+                SubServiceExpert subServiceExpertForSave=SubServiceExpert.builder().expert(findExpert).subServices(subServices).registerDate(LocalDate.now()).build();
+                try {
+                    subServiceExpertService.saveOrUpdate(subServiceExpertForSave);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            } else {
+                System.out.println("this expert saved in this sub service before this time ." +
+                        "\n you can save one time ");
+            }
+        }else System.out.println("the expert is not confirm");
     }
 
 
@@ -67,7 +154,8 @@ public class AdminMenu {
                 } finally {
                     scanner.nextLine();
                 }
-            }oldSubServices.setBasePrice(basePrice);
+            }
+            oldSubServices.setBasePrice(basePrice);
             System.out.println("please enter description for this sub service:");
             String description = scanner.next();
             scanner.nextLine();
@@ -98,8 +186,8 @@ public class AdminMenu {
         SubServices subServices = customerMenu.selectSubService(customerMenu.selectService());
         try {
             subServicesService.delete(subServices);
-        }catch (Exception e){
-            System.out.println(e.getMessage()+"\n please try again lather");
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "\n please try again lather");
         }
     }
 
@@ -107,8 +195,8 @@ public class AdminMenu {
         Services services = customerMenu.selectService();
         try {
             servicesService.delete(services);
-        }catch (Exception e){
-            System.out.println(e.getMessage()+"\nplease try again lather");
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "\nplease try again lather");
         }
     }
 
