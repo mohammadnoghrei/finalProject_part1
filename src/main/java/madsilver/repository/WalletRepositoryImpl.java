@@ -12,6 +12,6 @@ public class WalletRepositoryImpl extends BaseRepositoryImpl<Wallet,Long> implem
 
     @Override
     public Class<Wallet> getEntityClass() {
-        return null;
+        return Wallet.class;
     }
 }
