@@ -26,7 +26,7 @@ public class ExpertRepositoryImpl extends BaseRepositoryImpl<Expert,Long> implem
 
         Query query = session.createQuery("FROM Person p WHERE p.username=:username");
         query.setParameter("username", username);
-        session.close();
+
         return Optional.ofNullable((Expert) query.getSingleResult());
     }
 
@@ -35,6 +35,15 @@ public class ExpertRepositoryImpl extends BaseRepositoryImpl<Expert,Long> implem
         Session session = SessionFactorySingleton.getInstance().openSession();
         Query<Expert> expertQuery = session.createQuery("FROM Expert e where e.expertStatus=:expertStatus", Expert.class);
         expertQuery.setParameter("expertStatus", ExpertStatus.WAITING_FOR_CONFIRMATION);
+        List<Expert> expertList = expertQuery.list();
+        session.close();
+        return expertList;
+    }
+    @Override
+    public List<Expert> findAllConfirmedExpert() {
+        Session session = SessionFactorySingleton.getInstance().openSession();
+        Query<Expert> expertQuery = session.createQuery("FROM Expert e where e.expertStatus=:expertStatus", Expert.class);
+        expertQuery.setParameter("expertStatus", ExpertStatus.CONFIRMED);
         List<Expert> expertList = expertQuery.list();
         session.close();
         return expertList;

@@ -45,4 +45,20 @@ public class ExpertServiceImpl extends BaseServiceImpl<Expert,Long, ExpertReposi
             return null;
         }
     }
+
+    @Override
+    public List<Expert> findAllConfirmedExpert() {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.getCurrentSession()) {
+            transaction = session.beginTransaction();
+            List<Expert>expertList = repository.findAllConfirmedExpert();
+            transaction.commit();
+            return expertList;
+        } catch (Exception e) {
+            e.getMessage();
+            assert transaction != null;
+            transaction.rollback();
+            return null;
+        }
+    }
 }

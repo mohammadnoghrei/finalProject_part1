@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ExpertRepository extends BaseRepository<Expert, Long> {
     Optional<Expert> findByUsername(String username);
     public List<Expert> findAllNotConfirmedExpert();
+    public List<Expert> findAllConfirmedExpert();
 }
