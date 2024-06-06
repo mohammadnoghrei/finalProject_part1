@@ -48,7 +48,7 @@ public class AdminMenu {
         SubServices subServices = customerMenu.selectSubService(customerMenu.selectService());
         List<Expert> expertList = expertService.findAllNotConfirmedExpert();
         expertList.forEach(a -> System.out.println("id:" + a.getId() + "  name and username =" + a.getFirstname() + " _ " + a.getLastname() + " _ " + a.getUsername()));
-        System.out.println("please enter expert id");
+        System.out.println("please  enter expert id");
         long id = 0;
         while (id == 0) {
             try {
@@ -96,9 +96,6 @@ public class AdminMenu {
             }
         }
         long finalId = id;
-//        Optional<Expert> result = expertList.stream()
-//                .filter(obj -> obj.getId() == finalId).findFirst();
-//        Expert findExpert = result.get();
 
         Expert findExpert = null;
         try {
@@ -115,7 +112,7 @@ public class AdminMenu {
             try {
                 subServiceExpert = subServiceExpertService.findSubServiceExpert(findExpert, subServices);
             } catch (Exception e) {
-                System.out.println(00);
+                System.out.println("ok");
             }
             if (subServiceExpert == null) {
                 SubServiceExpert subServiceExpertForSave=SubServiceExpert.builder().expert(findExpert).subServices(subServices).registerDate(LocalDate.now()).build();

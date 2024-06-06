@@ -177,31 +177,7 @@ public class CustomerMenu {
         return null;
     }
 
-    public  Person makePerson() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("please enter your first name:");
-        String firstname = scanner.next();
-        System.out.println("please enter your last name:");
-        String lastname = scanner.next();
-        System.out.println("please enter your nation code:");
-        String nationCode = scanner.next();
-        System.out.println("please enter your email:");
-        String email = scanner.next();
-        System.out.println("please enter your username:");
-        String username = scanner.next();
-        System.out.println("please enter your password:");
-        String password = scanner.next();
 
-         Person person= Person.builder()
-                .firstname(firstname)
-                .lastname(lastname)
-                .nationCode(nationCode)
-                .email(email)
-                .username(username)
-                .password(password)
-                .build();
-        return person;
-    }
 
     public void changePassword() {
         System.out.println("please enter your username");

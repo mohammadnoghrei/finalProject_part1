@@ -1,6 +1,6 @@
 package madsilver.menu;
 
-import madsilver.model.Customer;
+
 import madsilver.model.Expert;
 import madsilver.model.ExpertStatus;
 import madsilver.service.ExpertService;
@@ -11,12 +11,18 @@ import java.io.*;
 import java.util.Scanner;
 
 public class ExpertMenu {
-    private final CustomerMenu customerMenu = new CustomerMenu();
+
     private final ExpertService expertService = ApplicationContext.getExpertService();
     private final Scanner scanner = new Scanner(System.in);
 
     public void baseExpertMenu() {
         System.out.println("in next session of project expert can choose offer and do orders ");
+        System.out.println("you can just change your password do you want it?(y/n)");
+        String choose=scanner.next();
+        scanner.nextLine();
+        if (choose.toLowerCase().equals("y"))
+            changePassword();
+        else System.out.println("please enter valid value");
     }
 
     public void saveExpert() {
@@ -83,7 +89,7 @@ public class ExpertMenu {
 
     private Boolean isJPEG(File filename) {
         boolean flag = false;
-        DataInputStream ins = null;
+        DataInputStream ins;
         try {
             ins = new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
         } catch (FileNotFoundException e) {
