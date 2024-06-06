@@ -32,9 +32,31 @@ public class CustomerMenu {
         System.out.println("please select one item");
         System.out.println("1,edit profile  2,change password\n" +
                 "3,save order  0,Exit");
+        int choose =scanner.nextInt();
+        switch (choose){
+            case 1->editCustomer();
+            case 2->changePassword();
+            case 3->saveOrder();
+        }
     }
+
+    private void editCustomer() {
+
+    }
+
     public void saveCustomer() {
-        Customer customer = (Customer) makePerson();
+        System.out.println("please enter your first name:");
+        String firstname = scanner.next();
+        System.out.println("please enter your last name:");
+        String lastname = scanner.next();
+        System.out.println("please enter your nation code:");
+        String nationCode = scanner.next();
+        System.out.println("please enter your email:");
+        String email = scanner.next();
+        System.out.println("please enter your username:");
+        String username = scanner.next();
+        System.out.println("please enter your password:");
+        String password = scanner.next();
         System.out.println("please enter your card balance ");
         double cardBalance = 0;
         try {
@@ -42,9 +64,19 @@ public class CustomerMenu {
         } catch (InputMismatchException e) {
             System.out.println("please enter valid price");
         }
-        customer.setCardBalance(cardBalance);
+        Customer customer= Customer.builder()
+                .firstname(firstname)
+                .lastname(lastname)
+                .nationCode(nationCode)
+                .email(email)
+                .username(username)
+                .password(password)
+                .cardBalance(cardBalance)
+                .build();
+
         try {
             customerService.saveOrUpdate(customer);
+            SecurityContext.customer=customer;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -91,7 +123,9 @@ public class CustomerMenu {
             }
             System.out.println("please enter your address");
             String address = scanner.next();
+            Customer customer=ApplicationContext.getCustomerService().findByUsername(SecurityContext.customer.getUsername());
             Order order = Order.builder()
+                    .customer(customer)
                     .subServices(subServices)
                     .address(address)
                     .customerOfferPrice(price)
@@ -157,9 +191,8 @@ public class CustomerMenu {
         String username = scanner.next();
         System.out.println("please enter your password:");
         String password = scanner.next();
-        System.out.println("please enter your :");
 
-        return Person.builder()
+         Person person= Person.builder()
                 .firstname(firstname)
                 .lastname(lastname)
                 .nationCode(nationCode)
@@ -167,6 +200,7 @@ public class CustomerMenu {
                 .username(username)
                 .password(password)
                 .build();
+        return person;
     }
 
     public void changePassword() {

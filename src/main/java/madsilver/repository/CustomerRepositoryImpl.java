@@ -26,7 +26,7 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer,Long> im
 
         Query query = session.createQuery("FROM Person p WHERE p.username=:username");
         query.setParameter("username", username);
-        session.close();
+
         return Optional.ofNullable((Customer) query.getSingleResult());
     }
 }
