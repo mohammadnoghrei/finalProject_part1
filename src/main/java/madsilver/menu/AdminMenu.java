@@ -117,8 +117,6 @@ public class AdminMenu {
             } catch (Exception e) {
                 System.out.println(00);
             }
-//            Optional<SubServiceExpert> subServiceExpertOptional= subServiceExpertService.findSubServiceExpert(findExpert, subServices);
-//            SubServiceExpert subServiceExpert = subServiceExpertOptional.get();
             if (subServiceExpert == null) {
                 SubServiceExpert subServiceExpertForSave=SubServiceExpert.builder().expert(findExpert).subServices(subServices).registerDate(LocalDate.now()).build();
                 try {

@@ -22,10 +22,8 @@ public class PersonRepositoryImpl extends BaseRepositoryImpl<Person, Long> imple
     @Override
     public Optional<Person> findByUsername(String username) {
         Session session = SessionFactorySingleton.getInstance().openSession();
-
-        Query query = session.createQuery("FROM Person p WHERE p.username=:username");
+        Query <Person>query = session.createQuery("FROM Person p WHERE p.username=:username", Person.class);
         query.setParameter("username", username);
-
-        return Optional.ofNullable((Person) query.getSingleResult());
+        return Optional.ofNullable(query.getSingleResult());
     }
 }

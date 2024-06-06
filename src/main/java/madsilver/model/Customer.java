@@ -3,10 +3,10 @@ package madsilver.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import madsilver.base.entity.BaseEntity;
+
 
 import java.util.ArrayList;
 import java.util.List;

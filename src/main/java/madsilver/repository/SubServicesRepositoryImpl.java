@@ -26,7 +26,6 @@ public class SubServicesRepositoryImpl extends BaseRepositoryImpl<SubServices,Lo
         Query<SubServices> query = session.createQuery("FROM SubServices s WHERE s.services = :service ", SubServices.class);
         query.setParameter("service",services);
         List<SubServices> subServiceList=query.list();
-//        session.close();
         return subServiceList;
     }
 }

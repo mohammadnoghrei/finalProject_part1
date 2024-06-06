@@ -3,11 +3,11 @@ package madsilver.service;
 import madsilver.base.exeption.NotFoundException;
 import madsilver.base.service.BaseServiceImpl;
 import madsilver.model.Customer;
-import madsilver.model.Person;
+
 import madsilver.repository.CustomerRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+
 
 public class CustomerServiceImpl extends BaseServiceImpl<Customer,Long, CustomerRepository> implements CustomerService{
     public CustomerServiceImpl(CustomerRepository repository, SessionFactory sessionFactory) {

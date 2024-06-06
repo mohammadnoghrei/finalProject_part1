@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "subService_expert")
+@Table(name = "subServiceexpert")
 public class SubServiceExpert extends BaseEntity<Long> {
     @ManyToOne
     SubServices subServices;

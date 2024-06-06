@@ -24,10 +24,10 @@ public class ExpertRepositoryImpl extends BaseRepositoryImpl<Expert,Long> implem
     public Optional<Expert> findByUsername(String username) {
         Session session = SessionFactorySingleton.getInstance().openSession();
 
-        Query query = session.createQuery("FROM Person p WHERE p.username=:username");
+        Query <Expert>query = session.createQuery("FROM Person p WHERE p.username=:username", Expert.class);
         query.setParameter("username", username);
 
-        return Optional.ofNullable((Expert) query.getSingleResult());
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override

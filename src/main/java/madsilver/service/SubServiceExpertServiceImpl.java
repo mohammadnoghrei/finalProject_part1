@@ -3,7 +3,6 @@ package madsilver.service;
 import madsilver.base.exeption.NotFoundException;
 import madsilver.base.service.BaseServiceImpl;
 import madsilver.model.*;
-import madsilver.repository.ServicesRepository;
 import madsilver.repository.SubServiceExpertRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

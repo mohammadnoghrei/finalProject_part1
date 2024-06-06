@@ -1,7 +1,6 @@
 package madsilver.repository;
 
 import madsilver.base.repository.BaseRepositoryImpl;
-import madsilver.model.Admin;
 import madsilver.model.Order;
 import org.hibernate.SessionFactory;
 

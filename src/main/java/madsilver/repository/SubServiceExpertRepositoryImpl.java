@@ -22,10 +22,10 @@ public class SubServiceExpertRepositoryImpl extends BaseRepositoryImpl<SubServic
     @Override
     public Optional<SubServiceExpert> findSubServiceExpert(Expert expert, SubServices subServices) {
         Session session = SessionFactorySingleton.getInstance().openSession();
-        Query query = session.createQuery("FROM SubServiceExpert p WHERE p.expert=:expert and  p.subServices=:subService");
+        Query<SubServiceExpert> query = session.createQuery("FROM SubServiceExpert p WHERE p.expert=:expert and  p.subServices=:subService",SubServiceExpert.class);
         query.setParameter("subService", subServices);
         query.setParameter("expert", expert);
         session.close();
-        return Optional.ofNullable((SubServiceExpert) query.getSingleResult());
+        return Optional.ofNullable(query.getSingleResult());
     }
 }
