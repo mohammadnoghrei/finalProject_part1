@@ -1,6 +1,7 @@
 package madsilver.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
@@ -21,9 +22,10 @@ public class Expert extends Person {
     private ExpertStatus expertStatus;
     @Range(min = 0,max = 5)
     private double avgScore;
+    @NotNull
     private byte[] image;
-    @ManyToMany(mappedBy = "expertList",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
-    private List<SubServices> subServicesList=new ArrayList<>();
+    @OneToMany( mappedBy = "expert",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    private List<SubServiceExpert>subServiceExperts=new ArrayList<>();
     @ManyToMany(mappedBy = "expertList",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Offer>offerList=new ArrayList<>();
     double cardBalance;
