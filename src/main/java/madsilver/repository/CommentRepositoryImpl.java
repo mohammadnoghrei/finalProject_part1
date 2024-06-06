@@ -12,6 +12,6 @@ public class CommentRepositoryImpl extends BaseRepositoryImpl<Comment,Long> impl
 
     @Override
     public Class<Comment> getEntityClass() {
-        return null;
+        return Comment.class;
     }
 }
