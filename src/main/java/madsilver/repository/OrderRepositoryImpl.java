@@ -12,6 +12,6 @@ public class OrderRepositoryImpl extends BaseRepositoryImpl<Order,Long> implemen
 
     @Override
     public Class<Order> getEntityClass() {
-        return null;
+        return Order.class;
     }
 }

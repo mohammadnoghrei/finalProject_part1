@@ -12,6 +12,6 @@ public class OfferRepositoryImpl extends BaseRepositoryImpl<Offer,Long> implemen
 
     @Override
     public Class<Offer> getEntityClass() {
-        return null;
+        return Offer.class;
     }
 }

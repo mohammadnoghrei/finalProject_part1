@@ -25,7 +25,7 @@ public class PersonRepositoryImpl extends BaseRepositoryImpl<Person, Long> imple
 
         Query query = session.createQuery("FROM Person p WHERE p.username=:username");
         query.setParameter("username", username);
-        session.close();
+
         return Optional.ofNullable((Person) query.getSingleResult());
     }
 }
