@@ -25,6 +25,7 @@ public class SessionFactorySingleton {
                     .addAnnotatedClass(Person.class)
                     .addAnnotatedClass(Customer.class)
                     .addAnnotatedClass(Expert.class)
+                    .addAnnotatedClass(SubServiceExpert.class)
                     .addAnnotatedClass(Admin.class)
                     .addAnnotatedClass(Comment.class)
                     .addAnnotatedClass(Offer.class)
