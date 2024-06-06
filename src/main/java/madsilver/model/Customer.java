@@ -17,7 +17,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+
 public class Customer extends Person {
     @OneToMany(mappedBy = "customer",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Order> orderList=new ArrayList<>();

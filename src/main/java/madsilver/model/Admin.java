@@ -11,7 +11,7 @@ import madsilver.base.entity.BaseEntity;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class Admin extends Person {
     private String grade;
 

@@ -18,7 +18,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class Offer extends BaseEntity<Long> {
     @ManyToOne
     @NotNull

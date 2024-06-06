@@ -11,7 +11,7 @@ import madsilver.base.entity.BaseEntity;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class Wallet extends BaseEntity<Long> {
     @OneToOne
     private Person person;

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 @Table(name = "orders")
 public class Order extends BaseEntity<Long> {
     @ManyToOne

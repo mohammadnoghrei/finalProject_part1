@@ -14,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class SubServices extends BaseEntity<Long> {
     private String name;
     @ManyToOne

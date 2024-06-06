@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Person extends BaseEntity<Long> {
     @NotNull

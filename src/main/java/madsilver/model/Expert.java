@@ -16,7 +16,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+
 public class Expert extends Person {
     @Enumerated(value = EnumType.STRING)
     private ExpertStatus expertStatus;
